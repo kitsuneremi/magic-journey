@@ -1,0 +1,91 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class CastSkill : MonoBehaviour
+{
+    private Animator anim;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private GameObject skillPrefab1;
+    [SerializeField] private TextMeshProUGUI skill_1_cooldown_ui;
+    [SerializeField] private Image skill_1_cooldown_image;
+    
+    [SerializeField] private GameObject skillPrefab2;
+
+    [SerializeField] private GameObject skillPrefab3;
+
+    [SerializeField] private GameObject skillPrefab4;
+
+    [SerializeField] private Camera mainCamera;
+    
+    public PlayerStat stat;
+
+    public float skill_1_cooldown;
+    public float skill_2_cooldown;
+    public float skill_3_cooldown;
+    public float skill_4_cooldown;
+
+    private float skill_1_current_cooldown;
+    private float skill_2_current_cooldown;
+    private float skill_3_current_cooldown;
+    private float skill_4_current_cooldown;
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+        ReduceCooldown();
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            if(skill_1_current_cooldown == 0)
+            {
+                Vector3 mousePositionScreen = Input.mousePosition;
+                Vector3 mousePositionWorld = mainCamera.ScreenToWorldPoint(new Vector3(mousePositionScreen.x, mousePositionScreen.y, mainCamera.nearClipPlane));
+                Vector3 directionToMouse = mousePositionWorld - spawnPoint.position;
+                transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);
+                skill_1_current_cooldown = skill_1_cooldown;
+                stat.Mana -= 40;
+                anim.SetTrigger("attack");
+                var bullet = Instantiate(skillPrefab1, spawnPoint.position, spawnPoint.rotation);
+                float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+                bullet.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(directionToMouse.x, directionToMouse.y).normalized * 20f;
+
+            }
+            else
+            {
+
+            }
+        }
+    }
+
+
+    void ReduceCooldown()
+    {
+        
+        if(skill_1_current_cooldown == 0)
+        {
+            skill_1_cooldown_image.color = Color.clear;
+            skill_1_cooldown_ui.text = "";
+        }
+        else
+        {
+            skill_1_cooldown_ui.text = skill_1_current_cooldown.ToString("F1");
+            skill_1_cooldown_image.color = new Color(87/255f, 40/255f, 40/255f, 208/255f);
+            if (skill_1_current_cooldown > 0)
+            {
+                skill_1_current_cooldown -= Time.deltaTime;
+            }
+            else
+            {
+                skill_1_current_cooldown = 0;
+            }
+        }
+    }
+}
