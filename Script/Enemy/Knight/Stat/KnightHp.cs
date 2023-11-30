@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Hp : MonoBehaviour
+public class KnightHp : MonoBehaviour
 {
     private float currentHp;
-    [SerializeField]private HpBar healthBar;
+    [SerializeField] private KnightHpBar healthBar;
     [SerializeField] private TextMeshProUGUI levelUi;
 
     private Animator animator;
@@ -31,6 +31,8 @@ public class Hp : MonoBehaviour
         healthBar.SetHealth(currentHp);
         if(currentHp <= 0)
         {
+            DropItem drop = GetComponent<DropItem>();
+            drop.InstantiateItem(this.transform);
             Destroy(this.gameObject);
             playerStat.Exp += enemyStat.enemyData.expGiven;
         }
@@ -38,9 +40,9 @@ public class Hp : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (transform.parent)
+        if (this.transform.parent)
         {
-            Destroy(transform.parent.gameObject);
+            Destroy(this.transform.parent.gameObject);
         }
     }
 }

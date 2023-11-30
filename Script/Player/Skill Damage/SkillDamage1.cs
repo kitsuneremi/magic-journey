@@ -36,7 +36,11 @@ public class SkillDamage1 : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyStat enemyStat = collision.gameObject.GetComponent<EnemyStat>();
-            float damage = (100/100 * playerStat.playerData.attack + 120) - enemyStat.enemyData.defend;
+            float damage = (10/100 * playerStat.playerData.attack + 120) - enemyStat.enemyData.defend;
+            if(damage <= 0)
+            {
+                damage = 1;
+            }
             enemyStat.Health -= damage;
             DisplayDamageText(damage);
             Destroy(gameObject);

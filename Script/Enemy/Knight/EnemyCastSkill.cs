@@ -9,6 +9,7 @@ public class EnemyCastSkill : MonoBehaviour
     [SerializeField] private GameObject fireball_prefab;
     [SerializeField] private float fireball_speed;
 
+
     private Animator anim;
 
     void Start()
@@ -17,14 +18,7 @@ public class EnemyCastSkill : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-
+    // hàm này sẽ được gọi khi animation cast skill đi đến frame cuối
     public void CastSkill()
     {
         Vector3 directionToPlayer = player.transform.position - spawn_point.position;

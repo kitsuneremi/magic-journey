@@ -13,10 +13,12 @@ public class CastSkill : MonoBehaviour
     [SerializeField] private Image skill_1_cooldown_image;
     
     [SerializeField] private GameObject skillPrefab2;
+    [SerializeField] private TextMeshProUGUI skill_2_cooldown_ui;
+    [SerializeField] private Image skill_2_cooldown_image;
 
-    [SerializeField] private GameObject skillPrefab3;
+/*    [SerializeField] private GameObject skillPrefab3;
 
-    [SerializeField] private GameObject skillPrefab4;
+    [SerializeField] private GameObject skillPrefab4;*/
 
     [SerializeField] private Camera mainCamera;
     
@@ -43,7 +45,7 @@ public class CastSkill : MonoBehaviour
         ReduceCooldown();
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if(skill_1_current_cooldown == 0)
+            if(skill_1_current_cooldown <= 0f)
             {
                 Vector3 mousePositionScreen = Input.mousePosition;
                 Vector3 mousePositionWorld = mainCamera.ScreenToWorldPoint(new Vector3(mousePositionScreen.x, mousePositionScreen.y, mainCamera.nearClipPlane));
@@ -52,10 +54,32 @@ public class CastSkill : MonoBehaviour
                 skill_1_current_cooldown = skill_1_cooldown;
                 stat.Mana -= 40;
                 anim.SetTrigger("attack");
-                var bullet = Instantiate(skillPrefab1, spawnPoint.position, spawnPoint.rotation);
+                var bullet1 = Instantiate(skillPrefab1, spawnPoint.position, spawnPoint.rotation);
                 float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
-                bullet.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(directionToMouse.x, directionToMouse.y).normalized * 20f;
+                bullet1.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                bullet1.GetComponent<Rigidbody2D>().velocity = new Vector2(directionToMouse.x, directionToMouse.y).normalized * 20f;
+
+            }
+            else
+            {
+
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (skill_2_current_cooldown <= 0f)
+            {
+                Vector3 mousePositionScreen = Input.mousePosition;
+                Vector3 mousePositionWorld = mainCamera.ScreenToWorldPoint(new Vector3(mousePositionScreen.x, mousePositionScreen.y, mainCamera.nearClipPlane));
+                Vector3 directionToMouse = mousePositionWorld - spawnPoint.position;
+                transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);
+                skill_2_current_cooldown = skill_2_cooldown;
+                stat.Mana -= 90;
+                anim.SetTrigger("attack");
+                var bullet2 = Instantiate(skillPrefab2, spawnPoint.position, spawnPoint.rotation);
+                float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+                bullet2.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                bullet2.GetComponent<Rigidbody2D>().velocity = new Vector2(directionToMouse.x, directionToMouse.y).normalized * 20f;
 
             }
             else
@@ -68,24 +92,32 @@ public class CastSkill : MonoBehaviour
 
     void ReduceCooldown()
     {
-        
-        if(skill_1_current_cooldown == 0)
+        // cooldown skill 1
+        if(skill_1_current_cooldown <= 0f)
         {
             skill_1_cooldown_image.color = Color.clear;
             skill_1_cooldown_ui.text = "";
+            skill_1_current_cooldown = 0;
         }
-        else
+        else if(skill_1_current_cooldown > 0)
         {
             skill_1_cooldown_ui.text = skill_1_current_cooldown.ToString("F1");
             skill_1_cooldown_image.color = new Color(87/255f, 40/255f, 40/255f, 208/255f);
-            if (skill_1_current_cooldown > 0)
-            {
-                skill_1_current_cooldown -= Time.deltaTime;
-            }
-            else
-            {
-                skill_1_current_cooldown = 0;
-            }
+            skill_1_current_cooldown -= Time.deltaTime;
+        }
+
+        // cooldown skill 2
+        if (skill_2_current_cooldown <= 0f)
+        {
+            skill_2_cooldown_image.color = Color.clear;
+            skill_2_cooldown_ui.text = "";
+            skill_2_current_cooldown = 0;
+        }
+        else if (skill_2_current_cooldown > 0)
+        {
+            skill_2_current_cooldown -= Time.deltaTime;
+            skill_2_cooldown_ui.text = skill_2_current_cooldown.ToString("F1");
+            skill_2_cooldown_image.color = new Color(87 / 255f, 40 / 255f, 40 / 255f, 208 / 255f);
         }
     }
 }

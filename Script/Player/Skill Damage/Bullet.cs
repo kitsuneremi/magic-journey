@@ -39,7 +39,11 @@ public class Butlet : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyStat enemyStat = collision.gameObject.GetComponent<EnemyStat>();
-            float damage = (playerStat.Attack - enemyStat.enemyData.defend) * 4 / 10;
+            float damage = (10 / 100 * playerStat.playerData.attack + 80) - enemyStat.enemyData.defend;
+            if(damage <= 0)
+            {
+                damage = 1;
+            }
             enemyStat.Health -= damage;
             DisplayDamageText(damage);
             Destroy(gameObject);

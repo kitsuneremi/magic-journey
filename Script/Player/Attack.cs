@@ -8,12 +8,12 @@ public class Attack : MonoBehaviour
 {
 
     [SerializeField] private float bulletSpeed = 10f;
-    [SerializeField] private int maxBullet = 5;
+    [SerializeField] private int maxBullet = 12;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Camera mainCamera;
-
+     
 
     private bool refreshable = true;
     private int bulletRemaining;

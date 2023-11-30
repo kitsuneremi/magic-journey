@@ -28,7 +28,11 @@ public class Fireball : MonoBehaviour
             player_stat = collision.gameObject.GetComponent<PlayerStat>();
             var player_animator = collision.gameObject.GetComponent<Animator>();
             player_animator.SetTrigger("hurt");
-            player_stat.Health -= 1.2f * (120 - player_stat.Defend) + 120;
+            player_stat.Health -= 1.2f * (120 - player_stat.Defend) + 20;
+            Destroy(this.gameObject);
+        }
+        if (collision.gameObject.name.Equals("Ground"))
+        {
             Destroy(this.gameObject);
         }
     }

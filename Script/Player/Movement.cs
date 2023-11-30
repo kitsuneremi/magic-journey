@@ -9,9 +9,8 @@ public class Movement : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D coll;
     private Animator anim;
+    private bool isJumping = false;
 
-    private int direction = 1;
-    bool isJumping = false;
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float jumpHeight = 10f;
     [SerializeField] private float moveAcceleration = 60f;
@@ -32,7 +31,9 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Run();    }
+        Run();
+        anim.SetBool("isJump", isJumping);
+    }
 
     void Run()
     {
@@ -56,26 +57,21 @@ public class Movement : MonoBehaviour
     }
     void Jump()
     {
-        if ((Input.GetButtonDown("Jump") || Input.GetAxisRaw("Vertical") > 0)
-        && IsGround())
+        if ((Input.GetButtonDown("Jump") || Input.GetAxisRaw("Vertical") > 0) && !isJumping)
         {
             isJumping = true;
-            anim.SetBool("isJump", true);
-
             rb.velocity = Vector2.zero;
 
             Vector2 jumpVelocity = new Vector2(0f, jumpHeight);
             rb.AddForce(jumpVelocity, ForceMode2D.Impulse);
-
-            isJumping = false;
         }
 
     }
-
-    private bool IsGround()
+    public void ResetJumping()
     {
-        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableground);
+        isJumping = false;
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -86,4 +82,5 @@ public class Movement : MonoBehaviour
             isJumping = false;
         }
     }
+
 }
