@@ -4,18 +4,7 @@ using UnityEngine;
 
 public class Fireball : MonoBehaviour
 {
-/*    [SerializeField] private EnemyStat enemy_stat;*/
     private PlayerStat player_stat;
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     private void Awake()
     {
         Destroy(this.gameObject, 3f);

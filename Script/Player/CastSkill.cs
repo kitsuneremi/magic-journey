@@ -23,6 +23,7 @@ public class CastSkill : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     
     public PlayerStat stat;
+    public GameObject conditionTextPrefab;
 
     public float skill_1_cooldown;
     public float skill_2_cooldown;
@@ -33,26 +34,33 @@ public class CastSkill : MonoBehaviour
     private float skill_2_current_cooldown;
     private float skill_3_current_cooldown;
     private float skill_4_current_cooldown;
+
+    public float skill_1_consume = 40f;
+    public float skill_2_consume = 120f;
+    public float skill_3_consume;
+    public float skill_4_consume;
+
+
     void Start()
     {
         anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         
         ReduceCooldown();
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if(skill_1_current_cooldown <= 0f)
+            if(skill_1_current_cooldown <= 0f && stat.Mana >= skill_1_consume)
             {
                 Vector3 mousePositionScreen = Input.mousePosition;
                 Vector3 mousePositionWorld = mainCamera.ScreenToWorldPoint(new Vector3(mousePositionScreen.x, mousePositionScreen.y, mainCamera.nearClipPlane));
                 Vector3 directionToMouse = mousePositionWorld - spawnPoint.position;
                 transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);
                 skill_1_current_cooldown = skill_1_cooldown;
-                stat.Mana -= 40;
+                stat.Mana -= skill_1_consume;
                 anim.SetTrigger("attack");
                 var bullet1 = Instantiate(skillPrefab1, spawnPoint.position, spawnPoint.rotation);
                 float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
@@ -60,21 +68,30 @@ public class CastSkill : MonoBehaviour
                 bullet1.GetComponent<Rigidbody2D>().velocity = new Vector2(directionToMouse.x, directionToMouse.y).normalized * 20f;
 
             }
-            else
+            else if(skill_1_current_cooldown > 0f)
             {
-
+                conditionTextPrefab.GetComponent<TextMeshPro>().color = Color.white;
+                conditionTextPrefab.GetComponent<TextMeshPro>().text = "skill on cooldown";
+                var text = Instantiate(conditionTextPrefab, transform.position, Quaternion.identity);
+                Destroy(text, .5f);
+            }else if(stat.Mana < skill_1_consume)
+            {
+                conditionTextPrefab.GetComponent<TextMeshPro>().color = Color.cyan;
+                conditionTextPrefab.GetComponent<TextMeshPro>().text = "not enough mana";
+                var text = Instantiate(conditionTextPrefab, transform.position, Quaternion.identity);
+                Destroy(text, .5f);
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (skill_2_current_cooldown <= 0f)
+            if (skill_2_current_cooldown <= 0f && stat.Mana >= skill_2_consume)
             {
                 Vector3 mousePositionScreen = Input.mousePosition;
                 Vector3 mousePositionWorld = mainCamera.ScreenToWorldPoint(new Vector3(mousePositionScreen.x, mousePositionScreen.y, mainCamera.nearClipPlane));
                 Vector3 directionToMouse = mousePositionWorld - spawnPoint.position;
                 transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);
                 skill_2_current_cooldown = skill_2_cooldown;
-                stat.Mana -= 90;
+                stat.Mana -= skill_2_consume;
                 anim.SetTrigger("attack");
                 var bullet2 = Instantiate(skillPrefab2, spawnPoint.position, spawnPoint.rotation);
                 float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
@@ -82,9 +99,19 @@ public class CastSkill : MonoBehaviour
                 bullet2.GetComponent<Rigidbody2D>().velocity = new Vector2(directionToMouse.x, directionToMouse.y).normalized * 20f;
 
             }
-            else
+            else if (skill_2_current_cooldown > 0f)
             {
-
+                conditionTextPrefab.GetComponent<TextMeshPro>().color = Color.white;
+                conditionTextPrefab.GetComponent<TextMeshPro>().text = "skill on cooldown";
+                var text = Instantiate(conditionTextPrefab, transform.position, Quaternion.identity);
+                Destroy(text, .5f);
+            }
+            else if (stat.Mana < skill_2_consume)
+            {
+                conditionTextPrefab.GetComponent<TextMeshPro>().color = Color.cyan;
+                conditionTextPrefab.GetComponent<TextMeshPro>().text = "not enough mana";
+                var text = Instantiate(conditionTextPrefab, transform.position, Quaternion.identity);
+                Destroy(text, .5f);
             }
         }
     }
