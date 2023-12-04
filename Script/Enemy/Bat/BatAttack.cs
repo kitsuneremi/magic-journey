@@ -15,14 +15,14 @@ public class BatAttack : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (canFollow)
         {
             // Khi có thể theo dõi player, kiểm tra cooldown
             if (skillCooldown > 0)
             {
-                skillCooldown -= Time.deltaTime;
+                skillCooldown -= Time.fixedDeltaTime;
             }
 
             // Nếu cooldown đã hết và không phải đang tấn công, thực hiện hành động tấn công
@@ -50,7 +50,7 @@ public class BatAttack : MonoBehaviour
         isAttacking = true;
 
         // Thực hiện hành động tấn công (lao vào player)
-        while (Vector2.Distance(transform.position, player.transform.position) > 0.1f && animator.GetBool("isFlying"))
+        while (Vector2.Distance(transform.position, player.transform.position) > 0.1f && animator.GetBool("isFlying") && isAttacking)
         {
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, 4f * Time.deltaTime);
             yield return null;

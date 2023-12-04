@@ -26,7 +26,7 @@ public class StaffAttack : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyStat enemyStat = collision.gameObject.GetComponent<EnemyStat>();
-            float damage = playerStat.Attack - enemyStat.Defend;
+            float damage = playerStat.Attack * 20 / 100 - enemyStat.Defend;
             enemyStat.Health -= damage;
             DisplayDamageText(damage);
         }

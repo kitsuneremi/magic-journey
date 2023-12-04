@@ -16,17 +16,33 @@ public class Movement : MonoBehaviour
     [SerializeField] private float moveAcceleration = 60f;
     [SerializeField] private LayerMask jumpableground;
     private float dirX;
+
+    private float fallSpeedDampingThreshold;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<BoxCollider2D>();
+
+        fallSpeedDampingThreshold = CameraManager.instance.fallSpeedDampingThreshold;
+
     }
 
     void Update()
     {
         Jump();
+
+        if(rb.velocity.y < fallSpeedDampingThreshold && !CameraManager.instance.IsLerpingYDamping && !CameraManager.instance.LerpedFromPlayerFalling)
+        {
+            CameraManager.instance.LerpYDamping(true);
+        }
+
+        if(rb.velocity.y >= 0f && !CameraManager.instance.IsLerpingYDamping && CameraManager.instance.LerpedFromPlayerFalling)
+        {
+            CameraManager.instance.LerpedFromPlayerFalling = false;
+            CameraManager.instance.LerpYDamping(false);
+        }
     }
 
     private void FixedUpdate()
@@ -44,7 +60,8 @@ public class Movement : MonoBehaviour
 
         if (dirX != 0f)
         {
-            transform.localScale = new Vector3(dirX < 0 ? -1 : 1, 1, 1);
+/*            transform.localScale = new Vector3(dirX < 0 ? -1 : 1, 1, 1);*/
+            transform.rotation = Quaternion.Euler(0, dirX < 0 ? -180 : 0, 0);
             float targetVelocity = dirX * moveSpeed;
             float acceleration = Mathf.Abs(rb.velocity.x - targetVelocity) < 0.05f ? 0f : moveAcceleration;
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetVelocity, acceleration * Time.deltaTime), rb.velocity.y);

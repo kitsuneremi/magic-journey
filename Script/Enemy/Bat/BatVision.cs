@@ -8,7 +8,7 @@ public class BatVision : MonoBehaviour
     [SerializeField] private Transform defaultLocation;
     private bool needMove = false;
     private GameObject batBody;
-    private bool stillIn = false;
+    private bool playerStaying = false;
 
     private void FixedUpdate()
     {
@@ -19,7 +19,7 @@ public class BatVision : MonoBehaviour
                 batBody.GetComponent<Animator>().SetBool("isFlying", true);
                 MoveIn();
             }
-            else
+            if (Vector2.Distance(batBody.transform.position, defaultLocation.position) < .1f)
             {
                 needMove = false;
                 batBody.GetComponent<Animator>().SetTrigger("in");
@@ -31,7 +31,7 @@ public class BatVision : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Wizard"))
         {
-            stillIn = true;
+            playerStaying = true;
             transform.parent.GetChild(0).GetComponent<Animator>().SetTrigger("out");
             transform.parent.GetChild(0).GetComponent<BatAttack>().CanFollow();
         }
@@ -41,13 +41,13 @@ public class BatVision : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Wizard") && !needMove)
         {
-            stillIn = false;
+            playerStaying = false;
             needMove = true;
             batBody = transform.parent.GetChild(0).gameObject;
             transform.parent.GetChild(0).GetComponent<BatAttack>().CantFollow();
 
         }
-        if(collision.gameObject.name.Equals("Bat Body") && !stillIn)
+        if(collision.gameObject.name.Equals("Bat Body") && !playerStaying)
         {
             needMove = true;
             transform.parent.GetChild(0).GetComponent<BatAttack>().CantFollow();

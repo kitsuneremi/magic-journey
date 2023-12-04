@@ -59,32 +59,30 @@ public class PigAttack : MonoBehaviour
 
         // Lấy hướng từ quái vật đến player và lưu vào biến direction
         direction = (player.transform.position - transform.position).normalized;
-
         // Thực hiện hành động tấn công (lao vào player)
         while (Vector2.Distance(transform.position, player.transform.position) > 0.1f && canFollow && canMove)
         {
             animator.SetTrigger("run");
             // Di chuyển theo hướng đã lưu
             transform.localScale = new Vector3(direction.x < 0 ? 1 : -1, 1, 1);
-            /*transform.Translate(new Vector3(direction.x * 10f, transform.position.y, transform.position.z) * Time.deltaTime);*/
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(direction.x, transform.position.y), moveSpeed * Time.deltaTime);
+/*            transform.position = Vector2.MoveTowards(transform.position, new Vector2(direction.x, transform.position.y), moveSpeed * Time.deltaTime);*/
             yield return null;
         }
 
-        skillCooldown = skillCooldownTime;
-        canFollow = true;
-
+        isAttacking = false;
         yield return new WaitForSeconds(skillCooldownTime);
     }
 
     public void WallStop()
     {
-        Debug.Log("Wall stop");
-        animator.ResetTrigger("run");
-        animator.SetTrigger("idle");
-        canMove = false;
-        skillCooldown = skillCooldownTime;
-        isAttacking = false;
+        if(canMove = true && isAttacking)
+        {
+            Debug.Log("Wall stop");
+            animator.ResetTrigger("run");
+            animator.SetTrigger("idle");
+            canMove = false;
+            isAttacking = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

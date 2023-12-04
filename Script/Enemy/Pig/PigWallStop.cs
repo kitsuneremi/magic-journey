@@ -18,7 +18,7 @@ public class PigWallStop : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name.Equals("Ground"))
+        if (collision.gameObject.name.Equals("Ground") || collision.gameObject.CompareTag("Wall"))
         {
             transform.parent.gameObject.GetComponent<PigAttack>().WallStop();
         }
