@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class DropItem : MonoBehaviour
 {
-    private EnemyStat enemyData;
+    private EnemyStat enemyStat;
     [SerializeField] private GameObject collectablePrefab;
     void Start()
     {
-        enemyData = GetComponent<EnemyStat>();
+        enemyStat = GetComponent<EnemyStat>();
     }
 
     List<ItemData> GetDroppedItem()
     {
         List<ItemData> possibleItems = new List<ItemData>();
-        foreach(ItemDropInfo itemDropInfo in enemyData.enemyData.itemDrops)
+        foreach(ItemDropInfo itemDropInfo in enemyStat.listPhase[enemyStat.CurrentPhase].itemDrops)
         {
             int randomNumber = Random.Range(1, 101);
 
             if (randomNumber <= itemDropInfo.dropRate)
             {
-                Debug.Log(itemDropInfo.item.display_name);
                 possibleItems.Add(itemDropInfo.item);
             }
         }
