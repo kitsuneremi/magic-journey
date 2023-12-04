@@ -33,10 +33,10 @@ public class SkillDamage2 : MonoBehaviour
             Destroy(collision.gameObject);
             Destroy(gameObject);
         }
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Boss"))
         {
             EnemyStat enemyStat = collision.gameObject.GetComponent<EnemyStat>();
-            float damage = (30/100 * playerStat.playerData.attack + 300) - enemyStat.enemyData.defend;
+            float damage = (30/100 * playerStat.playerData.attack + 300) - enemyStat.listPhase[enemyStat.CurrentPhase].defend;
             if (damage <= 0)
             {
                 damage = 1;

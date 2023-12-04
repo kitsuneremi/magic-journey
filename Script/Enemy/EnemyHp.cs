@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class KnightHp : MonoBehaviour
+public class EnemyHp : MonoBehaviour
 {
     private float currentHp;
-    [SerializeField] private KnightHpBar healthBar;
+    [SerializeField] private EnemyHpBar healthBar;
     [SerializeField] private TextMeshProUGUI levelUi;
 
-    private Animator animator;
-    private Rigidbody2D rigid;
-    [SerializeField] private EnemyStat enemyStat;
+    private EnemyStat enemyStat;
     private GameObject player;
     private PlayerStat playerStat;
     void Start()
     {
-/*        animator = GetComponent<Animator>();*/
-        rigid = GetComponent<Rigidbody2D>();
-        healthBar.SetMaxHealth(enemyStat.enemyData.health);
-        levelUi.text = "Lv " + enemyStat.enemyData.level;
+        enemyStat = GetComponent<EnemyStat>();
+        healthBar = GetComponent<EnemyHpBar>();
+        enemyStat.Health = enemyStat.listPhase[enemyStat.CurrentPhase].health;
+        healthBar.SetMaxHealth(enemyStat.listPhase[enemyStat.CurrentPhase].health);
+        levelUi.text = "Lv " + enemyStat.listPhase[enemyStat.CurrentPhase].level;
         player = GameObject.Find("Wizard");
-        playerStat = player.GetComponent<PlayerStat>();
+        playerStat = player.GetComponent<PlayerStat>(); 
+        
     }
 
     // Update is called once per frame
@@ -29,12 +29,12 @@ public class KnightHp : MonoBehaviour
     {
         currentHp = enemyStat.Health;
         healthBar.SetHealth(currentHp);
-        if(currentHp <= 0)
+        if (currentHp <= 0)
         {
             DropItem drop = GetComponent<DropItem>();
             drop.InstantiateItem(this.transform);
             Destroy(this.gameObject);
-            playerStat.Exp += enemyStat.enemyData.expGiven;
+            playerStat.Exp += enemyStat.listPhase[enemyStat.CurrentPhase].expGiven;
         }
     }
 
