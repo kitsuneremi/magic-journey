@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [Serializable]
@@ -10,7 +10,7 @@ public class ItemDropInfo
 }
 
 [Serializable]
-public class EnemyData
+public class EnemyPhaseData
 {
     public float health;
     public float attack;
@@ -19,7 +19,7 @@ public class EnemyData
     public int expGiven;
     public List<ItemDropInfo> itemDrops;
 
-    public EnemyData(float health, float attack, int level, float defend, int expGiven, List<ItemDropInfo> itemDrops)
+    public EnemyPhaseData(float health, float attack, int level, float defend, int expGiven, List<ItemDropInfo> itemDrops)
     {
         this.health = health;
         this.attack = attack;
@@ -30,9 +30,20 @@ public class EnemyData
     }
 }
 
+[Serializable]
+public class EnemyData
+{
+    public List<EnemyPhaseData> ListPhaseData { get; set; }
+
+    public EnemyData(List<EnemyPhaseData> list)
+    {
+        this.ListPhaseData = list;
+    }
+}
+
 public class EnemyStat : MonoBehaviour
 {
-    public EnemyData enemyData;
+    public List<EnemyPhaseData> listPhase;
 
     public float Health
     {
@@ -58,14 +69,19 @@ public class EnemyStat : MonoBehaviour
     {
         get; private set;
     }
-    public List<ItemDropInfo> ItemDrops { get { return enemyData.itemDrops; } }
+
+    public int CurrentPhase
+    {
+        get; set;
+    }
 
     private void Start()
     {
-        Health = enemyData.health;
-        Attack = enemyData.attack;
-        Level = enemyData.level;
-        Defend = enemyData.defend;
-        ExpGiven = enemyData.expGiven;
+        CurrentPhase = 0;
+        Health = listPhase[CurrentPhase].health;
+        Attack = listPhase[CurrentPhase].attack;
+        Level = listPhase[CurrentPhase].level;
+        Defend = listPhase[CurrentPhase].defend;
+        ExpGiven = listPhase[CurrentPhase].expGiven;
     }
 }
