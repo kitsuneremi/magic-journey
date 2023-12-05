@@ -14,16 +14,23 @@ public class PigAttack : MonoBehaviour
     private Animator animator;
     private Vector3 direction;
     private EnemyStat enemyStat;
+    private Rigidbody2D rb;
+
+    private bool engange = false;
+    private bool hasJumped = false;
 
     void Start()
     {
         player = GameObject.Find("Wizard");
         animator = GetComponent<Animator>();
         enemyStat = GetComponent<EnemyStat>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
+
+        engange = animator.GetBool("engange");
         if (canFollow)
         {
             // Khi có thể theo dõi player, kiểm tra cooldown
@@ -37,6 +44,11 @@ public class PigAttack : MonoBehaviour
             {
                 StartCoroutine(AttackPlayer());
             }
+        }
+        if (engange && !hasJumped)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 8f);
+            hasJumped = true;
         }
     }
 
@@ -56,22 +68,27 @@ public class PigAttack : MonoBehaviour
     {
         isAttacking = true;
         canMove = true;
-
-        // Lấy hướng từ quái vật đến player và lưu vào biến direction
         direction = (player.transform.position - transform.position).normalized;
-        // Thực hiện hành động tấn công (lao vào player)
+
         while (Vector2.Distance(transform.position, player.transform.position) > 0.1f && canFollow && canMove)
         {
             animator.SetTrigger("run");
+
             // Di chuyển theo hướng đã lưu
             transform.localScale = new Vector3(direction.x < 0 ? 1 : -1, 1, 1);
-/*            transform.position = Vector2.MoveTowards(transform.position, new Vector2(direction.x, transform.position.y), moveSpeed * Time.deltaTime);*/
+            // Nếu quái vật đang rơi xuống và đến gần mặt đất, đặt velocity.y về 0 và đặt lại hasJumped
+
+            // Di chuyển bằng cách thay đổi vị trí
+            rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y);
             yield return null;
         }
 
         isAttacking = false;
         yield return new WaitForSeconds(skillCooldownTime);
     }
+
+
+
 
     public void WallStop()
     {
@@ -91,5 +108,9 @@ public class PigAttack : MonoBehaviour
         {
             collision.gameObject.GetComponent<PlayerStat>().Health -= enemyStat.Attack;
         }
+    }
+
+    public void ResetJump() {
+        hasJumped = false;
     }
 }

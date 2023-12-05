@@ -58,7 +58,8 @@ public class CastSkill : MonoBehaviour
                 Vector3 mousePositionScreen = Input.mousePosition;
                 Vector3 mousePositionWorld = mainCamera.ScreenToWorldPoint(new Vector3(mousePositionScreen.x, mousePositionScreen.y, mainCamera.nearClipPlane));
                 Vector3 directionToMouse = mousePositionWorld - spawnPoint.position;
-                transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);
+                /*transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);*/
+                transform.rotation = Quaternion.Euler(0, directionToMouse.x < 0 ? 180 : 0, 0);
                 skill_1_current_cooldown = skill_1_cooldown;
                 stat.Mana -= skill_1_consume;
                 anim.SetTrigger("attack");
@@ -89,7 +90,8 @@ public class CastSkill : MonoBehaviour
                 Vector3 mousePositionScreen = Input.mousePosition;
                 Vector3 mousePositionWorld = mainCamera.ScreenToWorldPoint(new Vector3(mousePositionScreen.x, mousePositionScreen.y, mainCamera.nearClipPlane));
                 Vector3 directionToMouse = mousePositionWorld - spawnPoint.position;
-                transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);
+                /*                transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);*/
+                transform.rotation = Quaternion.Euler(0, directionToMouse.x < 0 ? 180 : 0, 0);
                 skill_2_current_cooldown = skill_2_cooldown;
                 stat.Mana -= skill_2_consume;
                 anim.SetTrigger("attack");

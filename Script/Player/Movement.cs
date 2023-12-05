@@ -61,7 +61,7 @@ public class Movement : MonoBehaviour
         if (dirX != 0f)
         {
 /*            transform.localScale = new Vector3(dirX < 0 ? -1 : 1, 1, 1);*/
-            transform.rotation = Quaternion.Euler(0, dirX < 0 ? -180 : 0, 0);
+            transform.rotation = Quaternion.Euler(0, dirX < 0 ? 180 : 0, 0);
             float targetVelocity = dirX * moveSpeed;
             float acceleration = Mathf.Abs(rb.velocity.x - targetVelocity) < 0.05f ? 0f : moveAcceleration;
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetVelocity, acceleration * Time.deltaTime), rb.velocity.y);

@@ -10,11 +10,11 @@ public class BossHp : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelUi;
     [SerializeField] private GameObject BossUI;
 
+    private Animator anim;
     private EnemyStat enemyStat;
     private GameObject player;
     private PlayerStat playerStat;
 
-    private bool engange = false;
     void Start()
     {
         enemyStat = GetComponent<EnemyStat>();
@@ -25,7 +25,7 @@ public class BossHp : MonoBehaviour
         player = GameObject.Find("Wizard");
         playerStat = player.GetComponent<PlayerStat>();
         BossUI.SetActive(false);
-
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -33,7 +33,7 @@ public class BossHp : MonoBehaviour
     {
         currentHp = enemyStat.Health;
         healthBar.SetHealth(currentHp);
-        if (currentHp <= 0 && engange)
+        if (currentHp <= 0 && anim.GetBool("engange"))
         {
             DropItem drop = GetComponent<DropItem>();
             drop.InstantiateItem(this.transform);
@@ -42,9 +42,9 @@ public class BossHp : MonoBehaviour
             BossUI.SetActive(false);
         }
 
-        if(currentHp <= 0 && !engange && enemyStat.listPhase.Count > enemyStat.CurrentPhase + 1)
+        if(currentHp <= 0 && !anim.GetBool("engange") && enemyStat.listPhase.Count > enemyStat.CurrentPhase + 1)
         {
-            engange = true;
+            anim.SetBool("engange", true);
             DropItem drop = GetComponent<DropItem>();
             drop.InstantiateItem(this.transform);
             enemyStat.CurrentPhase += 1;
