@@ -12,6 +12,7 @@ public class EnemyHp : MonoBehaviour
     private EnemyStat enemyStat;
     private GameObject player;
     private PlayerStat playerStat;
+    private PlayerExp playerExp;
     void Start()
     {
         enemyStat = GetComponent<EnemyStat>();
@@ -21,6 +22,7 @@ public class EnemyHp : MonoBehaviour
         levelUi.text = "Lv " + enemyStat.listPhase[enemyStat.CurrentPhase].level;
         player = GameObject.Find("Wizard");
         playerStat = player.GetComponent<PlayerStat>(); 
+        playerExp = player.GetComponent<PlayerExp>();
         
     }
 
@@ -35,6 +37,7 @@ public class EnemyHp : MonoBehaviour
             drop.InstantiateItem(this.transform);
             Destroy(this.gameObject);
             playerStat.Exp += enemyStat.listPhase[enemyStat.CurrentPhase].expGiven;
+            playerExp.CalculateLevel();
         }
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
@@ -9,6 +10,11 @@ public class InventorySlot : MonoBehaviour
     public Image icon;
     public TextMeshProUGUI label_text;
     public TextMeshProUGUI stack_text;
+
+    private void Start()
+    {
+/*        ClearSlot();*/
+    }
 
     public void ClearSlot()
     {
@@ -34,4 +40,6 @@ public class InventorySlot : MonoBehaviour
             stack_text.text = item.quantity.ToString();
         }
     }
+
+
 }

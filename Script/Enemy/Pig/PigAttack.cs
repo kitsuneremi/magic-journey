@@ -61,7 +61,7 @@ public class PigAttack : MonoBehaviour
     {
         canFollow = false;
         isAttacking = false;
-        StopAllCoroutines(); // Ngừng tất cả các coroutine đang chạy nếu chuyển sang trạng thái chờ
+        StopAllCoroutines();
     }
 
     IEnumerator AttackPlayer()
@@ -73,12 +73,7 @@ public class PigAttack : MonoBehaviour
         while (Vector2.Distance(transform.position, player.transform.position) > 0.1f && canFollow && canMove)
         {
             animator.SetTrigger("run");
-
-            // Di chuyển theo hướng đã lưu
             transform.localScale = new Vector3(direction.x < 0 ? 1 : -1, 1, 1);
-            // Nếu quái vật đang rơi xuống và đến gần mặt đất, đặt velocity.y về 0 và đặt lại hasJumped
-
-            // Di chuyển bằng cách thay đổi vị trí
             rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y);
             yield return null;
         }

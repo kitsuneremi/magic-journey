@@ -14,7 +14,7 @@ public class BossHp : MonoBehaviour
     private EnemyStat enemyStat;
     private GameObject player;
     private PlayerStat playerStat;
-
+    private PlayerExp playerExp;
     void Start()
     {
         enemyStat = GetComponent<EnemyStat>();
@@ -24,6 +24,7 @@ public class BossHp : MonoBehaviour
         levelUi.text = "Lv " + enemyStat.listPhase[enemyStat.CurrentPhase].level;
         player = GameObject.Find("Wizard");
         playerStat = player.GetComponent<PlayerStat>();
+        playerExp = player.GetComponent<PlayerExp>();
         BossUI.SetActive(false);
         anim = GetComponent<Animator>();
     }
@@ -40,6 +41,7 @@ public class BossHp : MonoBehaviour
             Destroy(this.gameObject);
             playerStat.Exp += enemyStat.listPhase[enemyStat.CurrentPhase].expGiven;
             BossUI.SetActive(false);
+            playerExp.CalculateLevel();
         }
 
         if(currentHp <= 0 && !anim.GetBool("engange") && enemyStat.listPhase.Count > enemyStat.CurrentPhase + 1)
@@ -52,6 +54,7 @@ public class BossHp : MonoBehaviour
             healthBar.SetMaxHealth(enemyStat.listPhase[enemyStat.CurrentPhase].health);
             levelUi.text = "Lv " + enemyStat.listPhase[enemyStat.CurrentPhase].level;
             playerStat.Exp += enemyStat.listPhase[enemyStat.CurrentPhase].expGiven;
+            playerExp.CalculateLevel();
         }
     }
 

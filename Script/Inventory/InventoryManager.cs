@@ -7,11 +7,11 @@ public class InventoryManager : MonoBehaviour
 {
     public static event Action<List<InventoryItem>> OnInventoryChanged;
 
-    public List<InventoryItem> inventory = new List<InventoryItem>(0);
+    public List<InventoryItem> inventory = new(0);
     private Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
 
     public GameObject slotPrefab;
-    public List<InventorySlot> slots = new(6);
+    [HideInInspector]public List<InventorySlot> slots = new(6);
 
     private void OnEnable()
     {
@@ -27,6 +27,7 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(ItemData item_data)
     {
+
         if (itemDictionary.TryGetValue(item_data, out InventoryItem item))
         {
             item.Increase();
@@ -34,7 +35,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            InventoryItem inventoryItem = new InventoryItem(item_data);
+            InventoryItem inventoryItem = new(item_data);
             inventory.Add(inventoryItem);
             itemDictionary.Add(item_data, inventoryItem);
             OnInventoryChanged.Invoke(inventory);
@@ -56,33 +57,35 @@ public class InventoryManager : MonoBehaviour
 
     public void ResetInventory()
     {
-        foreach(Transform childTransform in this.transform)
+        for(int i = 0; i < transform.childCount; i++)
         {
-            Destroy(childTransform.gameObject);
+            try
+            {
+                Destroy(transform.GetChild(i).GetChild(0).gameObject);
+            }catch(Exception e) { }
+
         }
-        slots = new List<InventorySlot>(6);
+        slots = new List<InventorySlot>(inventory.Count);
     }
 
     public void DrawInventory(List<InventoryItem> inventory)
     {
         ResetInventory();
-
         for (int i = 0; i < inventory.Count; i++)
         {
-            CreateInventorySlot();
+            CreateInventorySlot(i);
             slots[i].DrawSlot(inventory[i]);
-            
+
         }
     }
 
 
-    void CreateInventorySlot()
+    void CreateInventorySlot(int index)
     {
         GameObject slot = Instantiate(slotPrefab);
-        slot.transform.SetParent(transform, false);
+        slot.transform.SetParent(transform.GetChild(index), false);
 
         InventorySlot newSlotComponent = slot.GetComponent<InventorySlot>();
-        newSlotComponent.ClearSlot();
         slots.Add(newSlotComponent);
     }
 }

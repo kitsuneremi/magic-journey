@@ -45,7 +45,8 @@ public class Attack : MonoBehaviour
 
             // Tính vector hướng giữa player và con trỏ chuột
             Vector3 directionToMouse = mousePositionWorld - spawnPoint.position;
-            transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);
+            /*transform.localScale = new Vector3(directionToMouse.x < 0 ? -1 : 1, 1, 1);*/
+            transform.rotation = Quaternion.Euler(0, directionToMouse.x < 0 ? 180 : 0, 0);
             bulletRemaining -= 1;
             text.text = "bullet remaining: " + bulletRemaining;
             refreshable = false;

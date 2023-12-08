@@ -36,7 +36,10 @@ public class SkillDamage1 : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyStat enemyStat = collision.gameObject.GetComponent<EnemyStat>();
-            float damage = (10/100 * playerStat.playerData.attack + 120) - enemyStat.listPhase[enemyStat.CurrentPhase].defend;
+            Debug.Log(playerStat.playerData.attack + " " + enemyStat.listPhase[enemyStat.CurrentPhase].defend);
+            float damage = (10.0f / 100.0f * playerStat.playerData.attack + 120.0f) - enemyStat.listPhase[enemyStat.CurrentPhase].defend;
+
+            Debug.Log(damage);
             if(damage <= 0)
             {
                 damage = 1;

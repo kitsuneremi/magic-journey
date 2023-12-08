@@ -7,10 +7,11 @@ using UnityEngine.UI;
 public class PlayerMp : MonoBehaviour
 {
     [SerializeField] private Slider manabar;
-    [SerializeField] private PlayerStat stat;
+    private PlayerStat stat;
     [SerializeField] private TextMeshProUGUI mana_value_ui;
     void Start()
     {
+        stat = GetComponent<PlayerStat>();
         manabar.maxValue = stat.playerData.mana;
         stat.Mana = stat.playerData.mana;
     }

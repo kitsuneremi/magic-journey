@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   display_name: huh?
+  canConsume: 1
+  canDrop: 1
   icon: {fileID: 4566566039595748299, guid: 99a6f8d881d96d045a18fa94cfb5b914, type: 3}

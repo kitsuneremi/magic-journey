@@ -9,12 +9,13 @@ public class PlayerHp : MonoBehaviour
 {
     [SerializeField] private Slider bar;
     [SerializeField] private Slider ease;
-    [SerializeField] private PlayerStat stat;
+    private PlayerStat stat;
     [SerializeField] private TextMeshProUGUI hp_value_ui;
     private Animator anim;
     private bool alive = true;
     void Start()
     {
+        stat = GetComponent<PlayerStat>();
         bar.maxValue = stat.playerData.health;
         ease.maxValue = stat.playerData.health;
         anim = GetComponent<Animator>();

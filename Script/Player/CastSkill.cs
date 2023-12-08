@@ -22,7 +22,7 @@ public class CastSkill : MonoBehaviour
 
     [SerializeField] private Camera mainCamera;
     
-    public PlayerStat stat;
+    private PlayerStat stat;
     public GameObject conditionTextPrefab;
 
     public float skill_1_cooldown;
@@ -43,6 +43,7 @@ public class CastSkill : MonoBehaviour
 
     void Start()
     {
+        stat = GetComponent<PlayerStat>();
         anim = GetComponent<Animator>();
     }
 

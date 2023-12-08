@@ -59,23 +59,4 @@ public class PlayerStat : MonoBehaviour
         Defend = playerData.defend;
         Attack = playerData.attack;
     }
-
-    public void SavePlayerData()
-    {
-        // Convert PlayerData thành chuỗi JSON
-        string json = JsonUtility.ToJson(playerData);
-
-        // Lưu vào PlayerPrefs hoặc file khác
-        PlayerPrefs.SetString("PlayerData", json);
-        PlayerPrefs.Save();
-    }
-
-    public void LoadPlayerData()
-    {
-        // Lấy chuỗi JSON từ PlayerPrefs hoặc file khác
-        string json = PlayerPrefs.GetString("PlayerData");
-
-        // Chuyển đổi chuỗi JSON thành PlayerData
-        playerData = JsonUtility.FromJson<PlayerData>(json);
-    }
 }
