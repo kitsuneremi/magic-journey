@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Progress;
@@ -8,7 +9,7 @@ using static UnityEditor.Progress;
 public class QuickSlotList : MonoBehaviour
 {
     private static QuickSlotList instance;
-    private GameObject screenQuickSlotUI;
+    [SerializeField] private GameObject screenQuickSlotUI;
     [SerializeField] private GameObject screenQuickSlotUIPrefab;
     public static QuickSlotList Instance {
         get
@@ -33,7 +34,6 @@ public class QuickSlotList : MonoBehaviour
 
     private void Awake()
     {
-        screenQuickSlotUI = GameObject.Find("Screen quick slot UI");
         // Đảm bảo rằng chỉ có một instance tồn tại
         if (instance != null && instance != this)
         {
@@ -48,7 +48,7 @@ public class QuickSlotList : MonoBehaviour
 
     private void OnEnable()
     {
-        OnQuickSlotChangged += CallRender;
+        OnQuickSlotChangged += Print;
     }
 
     public void AddItem(ItemData item)
@@ -76,31 +76,26 @@ public class QuickSlotList : MonoBehaviour
         OnQuickSlotChangged.Invoke(listQuickSlotItem);
     }
 
-    void CallRender(List<InventoryItem> list)
+    void Print(List<InventoryItem> list)
     {
-        for (int i = 0; i < 1; i++)
+
+    }
+    public void CallRender(InventoryItem item, int index)
+    {
+        ClearSLot(index);
+        GameObject ui = Instantiate(screenQuickSlotUIPrefab);
+        ui.GetComponent<ScreenQuickSlotUI>().Render(item.item_data.icon, item.quantity);
+        ui.transform.SetParent(screenQuickSlotUI.transform.GetChild(index));
+    }
+
+
+    public void ClearSLot(int index)
+    {
+        for (int i = 0; i < screenQuickSlotUI.transform.GetChild(index).childCount; i++)
         {
-            if (i > list.Count - 1)
-            {
-                Debug.Log("no item");
-            }
-            else
-            {
-                InventoryItem item = list[i];
-                Debug.Log(item.item_data.display_name);
-                GameObject ui = Instantiate(screenQuickSlotUIPrefab);
-                ui.GetComponent<ScreenQuickSlotUI>().Render(item.item_data.icon, item.quantity);
-
-                if (screenQuickSlotUI.transform.GetChild(i) == null)
-                {
-                    ui.transform.SetParent(screenQuickSlotUI.transform.GetChild(i));
-                }
-                else
-                {
-                    ui.transform.SetParent(screenQuickSlotUI.transform.GetChild(i + 1));
-                }
-            }
-
+            Destroy(screenQuickSlotUI.transform.GetChild(index).GetChild(i).gameObject);
         }
     }
+
+
 }

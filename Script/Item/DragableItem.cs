@@ -10,22 +10,23 @@ public class DragableItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     [HideInInspector] public Image image;
     [HideInInspector] public CanvasGroup canvasGrp;
     [HideInInspector] public Transform parentAfterDrag;
-    [HideInInspector] public bool isQuickSlot;
-
+    [HideInInspector] public bool fromQuickSlot;
+    [HideInInspector] public bool endQuickSlot;
+    [HideInInspector] public int quickSlotIndex = -1;
     public void OnBeginDrag(PointerEventData eventData)
     {
         try
         {
             if (transform.parent != null)
             {
-                DragSlot dragSlotComponent = transform.parent.gameObject.GetComponent<DragSlot>();
-                if (dragSlotComponent != null)
+                QuickSlot quickSlotComponent = transform.parent.gameObject.GetComponent<QuickSlot>();
+                if (quickSlotComponent != null)
                 {
-                    isQuickSlot = false;
+                    fromQuickSlot = true;
                 }
                 else
                 {
-                    isQuickSlot = true;
+                    fromQuickSlot = false;
                 }
             }
 
@@ -50,6 +51,11 @@ public class DragableItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     {
         transform.SetParent(parentAfterDrag);
         canvasGrp.blocksRaycasts = true;
+/*        if(fromQuickSlot && !endQuickSlot)
+        {
+            QuickSlotList.Instance.ClearSLot(quickSlotIndex);
+        }*/
+/*        QuickSlotList.Instance.ClearSLot(quickSlotIndex);*/
     }
 
     void Start()

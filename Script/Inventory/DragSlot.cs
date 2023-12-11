@@ -12,12 +12,15 @@ public class DragSlot : MonoBehaviour, IDropHandler
         if(dropped.CompareTag("Inventory item"))
         {
             DragableItem dragableItem = dropped.GetComponent<DragableItem>();
-            if (dragableItem.isQuickSlot)
+            if (dragableItem.fromQuickSlot)
             {
                 transform.parent.gameObject.transform.parent.GetComponent<QuickSlotList>();
                 QuickSlotList.Instance.RemoveItem(dropped.GetComponent<InventoryData>().inventoryItemData);
-                dragableItem.isQuickSlot = false;
+                QuickSlotList.Instance.ClearSLot(dragableItem.quickSlotIndex);
+                dragableItem.fromQuickSlot = false;
             }
+            dragableItem.endQuickSlot = false;
+            dragableItem.quickSlotIndex = -1;
             dragableItem.parentAfterDrag = this.transform;
         }
         
