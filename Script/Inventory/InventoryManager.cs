@@ -5,24 +5,56 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    private static InventoryManager instance;
+    public static InventoryManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<InventoryManager>();
+                if (instance == null)
+                {
+                    GameObject obj = new GameObject("InventoryManager");
+                    instance = obj.AddComponent<InventoryManager>();
+                }
+            }
+            return instance;
+        }
+    }
+
     public static event Action<List<InventoryItem>> OnInventoryChanged;
 
     public List<InventoryItem> inventory = new(0);
-    private Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
+    private Dictionary<ItemData, InventoryItem> itemDictionary = new();
 
     public GameObject slotPrefab;
     [HideInInspector]public List<InventorySlot> slots = new(6);
 
+    private void Awake()
+    {
+        // Đảm bảo rằng chỉ có một instance tồn tại
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
+
     private void OnEnable()
     {
         OnInventoryChanged += DrawInventory;
-        DefaultItem.onCollected += AddItem;
+        DefaultItem.OnCollected += AddItem;
     }
 
     private void OnDisable()
     {
         OnInventoryChanged -= DrawInventory;
-        DefaultItem.onCollected -= AddItem;
+        DefaultItem.OnCollected -= AddItem;
     }
 
     public void AddItem(ItemData item_data)
@@ -62,7 +94,7 @@ public class InventoryManager : MonoBehaviour
             try
             {
                 Destroy(transform.GetChild(i).GetChild(0).gameObject);
-            }catch(Exception e) { }
+            }catch (Exception) { }
 
         }
         slots = new List<InventorySlot>(inventory.Count);

@@ -6,7 +6,7 @@ using UnityEngine;
 public class DefaultItem : MonoBehaviour
 {
     public ItemData itemData;
-    public static event HandleBoxCollected onCollected;
+    public static event HandleBoxCollected OnCollected;
     public delegate void HandleBoxCollected(ItemData item_data);
     private bool isThrough = false;
 
@@ -19,15 +19,8 @@ public class DefaultItem : MonoBehaviour
     public void Collect()
     {
         
-        onCollected?.Invoke(itemData);
+        OnCollected?.Invoke(itemData);
         Destroy(this.gameObject);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-/*        if (collision.collider.gameObject.name.Equals("Wizard")){
-            Collect();
-        }*/
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
