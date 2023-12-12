@@ -19,8 +19,7 @@ public class DragableItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         {
             if (transform.parent != null)
             {
-                QuickSlot quickSlotComponent = transform.parent.gameObject.GetComponent<QuickSlot>();
-                if (quickSlotComponent != null)
+                if (transform.parent.gameObject.TryGetComponent<QuickSlot>(out var quickSlotComponent))
                 {
                     fromQuickSlot = true;
                 }

@@ -32,7 +32,7 @@ public class DropItem : MonoBehaviour
         List<GameObject> lootItems = new List<GameObject>();
         foreach (ItemData item in droppedItem)
         {
-            collectablePrefab.GetComponent<DefaultItem>().itemData = item;
+            collectablePrefab.GetComponent<OnFieldItem>().itemData = item;
             lootItems.Add(Instantiate(collectablePrefab, spawnPoint.position, Quaternion.identity));
         }
     }

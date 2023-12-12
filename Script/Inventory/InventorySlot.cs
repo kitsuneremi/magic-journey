@@ -25,7 +25,7 @@ public class InventorySlot : MonoBehaviour
         }
         else
         {
-            GetComponent<InventoryData>().inventoryItemData = item;
+            GetComponent<InventoryData>().data = item;
             icon.enabled = true;
             stack_text.enabled = true;
             icon.sprite = item.item_data.icon;

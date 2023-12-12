@@ -6,21 +6,21 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Progress;
 
-public class QuickSlotList : MonoBehaviour
+public class QuickSlotManager : MonoBehaviour
 {
-    private static QuickSlotList instance;
+    private static QuickSlotManager instance;
     [SerializeField] private GameObject screenQuickSlotUI;
     [SerializeField] private GameObject screenQuickSlotUIPrefab;
-    public static QuickSlotList Instance {
+    public static QuickSlotManager Instance {
         get
         {
             if (instance == null)
             {
-                instance = FindObjectOfType<QuickSlotList>();
+                instance = FindObjectOfType<QuickSlotManager>();
                 if (instance == null)
                 {
                     GameObject obj = new GameObject("QuickSlotList");
-                    instance = obj.AddComponent<QuickSlotList>();
+                    instance = obj.AddComponent<QuickSlotManager>();
                 }
             }
             return instance;
@@ -82,10 +82,25 @@ public class QuickSlotList : MonoBehaviour
     }
     public void CallRender(InventoryItem item, int index)
     {
+        /*        Debug.Log(item.item_data.id + " child: " + screenQuickSlotUI.transform.GetChild(index).childCount);
+                if (screenQuickSlotUI.transform.GetChild(index).childCount > 0)
+                {
+                    Debug.Log(screenQuickSlotUI.transform.GetChild(index).GetComponentInChildren<InventoryData>().data.item_data.id);
+                    if (screenQuickSlotUI.transform.GetChild(index).GetComponentInChildren<InventoryData>().data.item_data.id == item.item_data.id)
+                    {
+                        screenQuickSlotUI.transform.GetChild(index).GetComponentInChildren<InventoryData>().data.quantity += item.quantity;
+                    }
+                }
+                else
+                {
+
+                }*/
         ClearSLot(index);
         GameObject ui = Instantiate(screenQuickSlotUIPrefab);
         ui.GetComponent<ScreenQuickSlotUI>().Render(item.item_data.icon, item.quantity);
+        ui.GetComponent<InventoryData>().data = item;
         ui.transform.SetParent(screenQuickSlotUI.transform.GetChild(index));
+
     }
 
 

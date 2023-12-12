@@ -26,7 +26,7 @@ public class InventoryManager : MonoBehaviour
     public static event Action<List<InventoryItem>> OnInventoryChanged;
 
     public List<InventoryItem> inventory = new(0);
-    private Dictionary<ItemData, InventoryItem> itemDictionary = new();
+    private Dictionary<string, InventoryItem> itemDictionary = new();
 
     public GameObject slotPrefab;
     [HideInInspector]public List<InventorySlot> slots = new(6);
@@ -48,19 +48,19 @@ public class InventoryManager : MonoBehaviour
     private void OnEnable()
     {
         OnInventoryChanged += DrawInventory;
-        DefaultItem.OnCollected += AddItem;
+        OnFieldItem.OnCollected += AddItem;
     }
 
     private void OnDisable()
     {
         OnInventoryChanged -= DrawInventory;
-        DefaultItem.OnCollected -= AddItem;
+        OnFieldItem.OnCollected -= AddItem;
     }
 
     public void AddItem(ItemData item_data)
     {
 
-        if (itemDictionary.TryGetValue(item_data, out InventoryItem item))
+        if (itemDictionary.TryGetValue(item_data.id, out InventoryItem item))
         {
             item.Increase();
             OnInventoryChanged?.Invoke(inventory);
@@ -69,20 +69,20 @@ public class InventoryManager : MonoBehaviour
         {
             InventoryItem inventoryItem = new(item_data);
             inventory.Add(inventoryItem);
-            itemDictionary.Add(item_data, inventoryItem);
+            itemDictionary.Add(item_data.id, inventoryItem);
             OnInventoryChanged.Invoke(inventory);
         }
     }
 
     public void Remove(ItemData item_data)
     {
-        if (itemDictionary.TryGetValue(item_data, out InventoryItem item))
+        if (itemDictionary.TryGetValue(item_data.id, out InventoryItem item))
         {
             item.Decrease();
             if (item.quantity == 0)
             {
                 inventory.Remove(item);
-                itemDictionary.Remove(item_data);
+                itemDictionary.Remove(item_data.id);
             }
         }
     }

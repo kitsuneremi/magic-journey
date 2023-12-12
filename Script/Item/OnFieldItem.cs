@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DefaultItem : MonoBehaviour
+public class OnFieldItem : MonoBehaviour
 {
     public ItemData itemData;
     public static event HandleBoxCollected OnCollected;
@@ -31,4 +31,4 @@ public class DefaultItem : MonoBehaviour
             isThrough = true;
         }
     }
-}
+} 

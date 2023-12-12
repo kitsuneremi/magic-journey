@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2246731489523561803}
   - component: {fileID: 1931396539237840410}
-  - component: {fileID: 4040751355491537191}
   - component: {fileID: 7100720779257732621}
   - component: {fileID: 4753268479505495680}
   - component: {fileID: 4539857544672229282}
+  - component: {fileID: -1463318853457119098}
   m_Layer: 8
   m_Name: Default Drop Item
   m_TagString: Untagged
@@ -88,19 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4040751355491537191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6144723825211948900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eee8f991f612a044f98561bfa9397401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: e0e1df60c766971428afe1448dd904e9, type: 2}
 --- !u!61 &7100720779257732621
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -218,3 +205,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9955635, y: 0.99197435}
   m_EdgeRadius: 0
+--- !u!114 &-1463318853457119098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6144723825211948900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eee8f991f612a044f98561bfa9397401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: d949bd4fa9164ad48865c8e631494672, type: 2}

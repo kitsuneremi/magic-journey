@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: -1819528978743581638}
   - component: {fileID: 7478706631591466880}
   m_Layer: 5
-  m_Name: Inventry UI item
+  m_Name: Inventory UI item
   m_TagString: Inventory item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
